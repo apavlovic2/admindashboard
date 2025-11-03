@@ -1,1 +1,15 @@
-<p>home works!</p>
+<div class="home-container">
+  <div class="charts-grid">
+    <p-card header="Successful Transactions (Last 30 Days)">
+      <p-chart type="line" [data]="transactionsChartData" [options]="chartOptions"></p-chart>
+    </p-card>
+
+    <p-card header="New Users (Last 30 Days)">
+      <p-chart type="line" [data]="usersChartData" [options]="chartOptions"></p-chart>
+    </p-card>
+
+    <p-card header="Payment Status Distribution (Last 30 Days)">
+      <p-chart type="pie" [data]="paymentStatusChartData" [options]="paymentStatusOptions"></p-chart>
+    </p-card>
+  </div>
+</div>
