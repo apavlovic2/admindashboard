@@ -1,0 +1,17 @@
+.status-tag {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.p-autocomplete {
+  min-width: 200px;
+}
+
+@media (max-width: 768px) {
+  .p-card {
+    padding: 1rem !important;
+  }
+}

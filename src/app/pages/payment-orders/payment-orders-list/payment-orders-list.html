@@ -1,1 +1,76 @@
-<p>payment-orders-list works!</p>
+<div class="p-4">
+  <p-card header="Payment Orders">
+    <div class="flex flex-col md:flex-row gap-3 mb-4">
+      <span class="p-input-icon-left flex-1">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          placeholder="Search by Reference, Title or Description"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event); applyFilters()"
+          class="w-full"
+        />
+      </span>
+
+      <p-autoComplete
+        [ngModel]="selectedStatus()"
+        [suggestions]="statuses"
+        (completeMethod)="filterStatuses($event)"
+        placeholder="Filter by Status"
+        (onSelect)="selectedStatus.set($event.value); applyFilters()"
+        (onClear)="selectedStatus.set(null); applyFilters()"
+        [forceSelection]="true"
+        [dropdown]="true"
+        class="w-full md:w-60"
+      ></p-autoComplete>
+    </div>
+
+    <p-table
+      [value]="filteredOrders()"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [responsiveLayout]="'scroll'"
+      sortMode="multiple"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="reference">Reference <p-sortIcon field="reference"></p-sortIcon></th>
+          <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
+          <th>Description</th>
+          <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+          <th pSortableColumn="amount">Amount <p-sortIcon field="amount"></p-sortIcon></th>
+          <th>Currency</th>
+          <th pSortableColumn="createdOn">Created On <p-sortIcon field="createdOn"></p-sortIcon></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-order>
+        <tr>
+          <td>{{ order.reference }}</td>
+          <td>{{ order.title }}</td>
+          <td>{{ order.description }}</td>
+          <td>
+            <span
+              class="status-tag"
+              [ngClass]="{
+                'bg-blue-100 text-blue-800': order.status === 'Created',
+                'bg-green-100 text-green-800': order.status === 'Successful',
+                'bg-red-100 text-red-800': order.status === 'Unsuccessful'
+              }"
+            >
+              {{ order.status }}
+            </span>
+          </td>
+          <td>{{ order.amount | number: '1.2-2' }}</td>
+          <td>{{ order.currency }}</td>
+          <td>{{ order.createdOn | date: 'medium' }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr><td colspan="7" class="text-center p-3">No payment orders found.</td></tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
