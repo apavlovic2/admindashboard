@@ -1,1 +1,81 @@
-<p>user-form works!</p>
+<p-toast></p-toast>
+
+<p-card [header]="editMode ? 'Edit User' : 'Create User'">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    
+    <div class="field">
+      <label>First Name *</label>
+      <input pInputText formControlName="firstName" />
+      <small class="error" *ngIf="f['firstName'].touched && f['firstName'].invalid">
+        First name is required (max 50 characters)
+      </small>
+    </div>
+
+    <div class="field">
+      <label>Last Name *</label>
+      <input pInputText formControlName="lastName" />
+      <small class="error" *ngIf="f['lastName'].touched && f['lastName'].invalid">
+        Last name is required (max 50 characters)
+      </small>
+    </div>
+
+    <div class="field">
+      <label>Email *</label>
+      <input pInputText formControlName="email" />
+      <small class="error" *ngIf="f['email'].touched && f['email'].invalid">
+        Must be a valid email address (max 50 characters)
+      </small>
+    </div>
+
+    <div class="field">
+      <label>Password {{ editMode ? '(optional)' : '*' }}</label>
+      <div class="password-wrapper">
+        <input
+          pInputText
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="password"
+        />
+        <button
+          type="button"
+          pButton
+          icon="{{ showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye' }}"
+          class="p-button-text p-button-plain"
+          (click)="togglePassword()"
+        ></button>
+      </div>
+      <small class="error" *ngIf="f['password'].touched && f['password'].errors">
+        <ng-container *ngIf="f['password'].errors['required']">Password is required.</ng-container>
+        <ng-container *ngIf="f['password'].errors['minlength']">Password must be at least 8 characters long.</ng-container>
+        <ng-container *ngIf="f['password'].errors['pattern']">
+          Must contain uppercase, lowercase, number, and special character.
+        </ng-container>
+      </small>
+    </div>
+
+    <div class="field">
+      <label>Roles</label>
+      <p-multiSelect
+        [options]="roles"
+        formControlName="roles"
+        [showClear]="true"
+        defaultLabel="Select roles"
+      ></p-multiSelect>
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-secondary mr-2"
+        (click)="onCancel()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        label="Save"
+        [disabled]="form.invalid && !editMode"
+      ></button>
+    </div>
+  </form>
+</p-card>
