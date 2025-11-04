@@ -1,1 +1,62 @@
-<p>payment-orders-details works!</p>
+<div class="p-4">
+  @if (order(); as o) {
+    <p-card header="Payment Order Details">
+      <div class="flex justify-between items-center mb-3 flex-wrap gap-2">
+        <h2 class="text-xl font-semibold">Order {{ o.reference }}</h2>
+        <p-tag
+          [value]="o.status"
+          [severity]="getStatusSeverity(o.status)">
+        </p-tag>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <h3 class="text-lg font-medium mb-2">Order Information</h3>
+          <p><strong>Title:</strong> {{ o.title }}</p>
+          <p><strong>Description:</strong> {{ o.description }}</p>
+          <p><strong>Amount:</strong> {{ o.amount | number: '1.2-2' }} {{ o.currency }}</p>
+          <p><strong>Created On:</strong> {{ o.createdOn | date: 'medium' }}</p>
+          @if (o.paidOn) {
+            <p><strong>Paid On:</strong> {{ o.paidOn | date: 'medium' }}</p>
+          }
+          @if (o.authorizationCode) {
+            <p><strong>Authorization Code:</strong> {{ o.authorizationCode }}</p>
+          }
+        </div>
+
+        @if (o.customer) {
+          <div>
+            <h3 class="text-lg font-medium mb-2">Customer Information</h3>
+            <p><strong>Name:</strong> {{ o.customer.firstName }} {{ o.customer.lastName }}</p>
+            <p><strong>Email:</strong> {{ o.customer.email }}</p>
+            <p><strong>Phone:</strong> {{ o.customer.phone }}</p>
+            <p><strong>Address:</strong>
+              {{ o.customer.address }},
+              {{ o.customer.city }},
+              {{ o.customer.postalCode }},
+              {{ o.customer.country }}
+            </p>
+          </div>
+        }
+      </div>
+
+      <p-divider></p-divider>
+
+      <div class="flex justify-end mt-3">
+        <a
+          [routerLink]="['/payment-orders']"
+          pButton
+          label="Back to List"
+          icon="pi pi-arrow-left"
+          class="p-button-outlined">
+        </a>
+      </div>
+    </p-card>
+  } @else {
+    <p-card>
+      <div class="text-center p-4">
+        <p>Loading payment order details...</p>
+      </div>
+    </p-card>
+  }
+</div>

@@ -1,30 +1,42 @@
-<div class="p-4">
+<div class="payment-orders-container p-4">
   <p-card header="Payment Orders">
-    <div class="flex flex-col md:flex-row gap-3 mb-4">
-      <span class="p-input-icon-left flex-1">
-        <i class="pi pi-search"></i>
-        <input
-          pInputText
-          placeholder="Search by Reference, Title or Description"
-          [ngModel]="searchTerm()"
-          (ngModelChange)="searchTerm.set($event); applyFilters()"
-          class="w-full"
-        />
-      </span>
+    <div class="filters-actions">
+      <div class="filters">
+        <span class="p-input-icon-left search-box">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            placeholder="Search by Reference, Title or Description"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event); applyFilters()"
+          />
+        </span>
 
-      <p-autoComplete
-        [ngModel]="selectedStatus()"
-        [suggestions]="statuses"
-        (completeMethod)="filterStatuses($event)"
-        placeholder="Filter by Status"
-        (onSelect)="selectedStatus.set($event.value); applyFilters()"
-        (onClear)="selectedStatus.set(null); applyFilters()"
-        [forceSelection]="true"
-        [dropdown]="true"
-        class="w-full md:w-60"
-      ></p-autoComplete>
+        <p-autoComplete
+          [ngModel]="selectedStatus()"
+          [suggestions]="statuses"
+          (completeMethod)="filterStatuses($event)"
+          placeholder="Filter by Status"
+          (onSelect)="selectedStatus.set($event.value); applyFilters()"
+          (onClear)="selectedStatus.set(null); applyFilters()"
+          [forceSelection]="true"
+          [dropdown]="true"
+          class="status-filter"
+        ></p-autoComplete>
+      </div>
+
+      <div class="actions">
+        <button
+          pButton
+          label="New Payment Order"
+          icon="pi pi-plus"
+          class="new-order-btn p-button-success"
+          [routerLink]="['/payment-orders/create']"
+        ></button>
+      </div>
     </div>
 
+    <!-- Table -->
     <p-table
       [value]="filteredOrders()"
       [paginator]="true"
@@ -32,6 +44,7 @@
       [rowsPerPageOptions]="[5, 10, 20]"
       [responsiveLayout]="'scroll'"
       sortMode="multiple"
+      class="orders-table"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -42,6 +55,7 @@
           <th pSortableColumn="amount">Amount <p-sortIcon field="amount"></p-sortIcon></th>
           <th>Currency</th>
           <th pSortableColumn="createdOn">Created On <p-sortIcon field="createdOn"></p-sortIcon></th>
+          <th>Actions</th>
         </tr>
       </ng-template>
 
@@ -51,25 +65,32 @@
           <td>{{ order.title }}</td>
           <td>{{ order.description }}</td>
           <td>
-            <span
-              class="status-tag"
-              [ngClass]="{
-                'bg-blue-100 text-blue-800': order.status === 'Created',
-                'bg-green-100 text-green-800': order.status === 'Successful',
-                'bg-red-100 text-red-800': order.status === 'Unsuccessful'
-              }"
-            >
+            <span class="status-tag" [ngClass]="getStatusClass(order.status)">
               {{ order.status }}
             </span>
           </td>
           <td>{{ order.amount | number: '1.2-2' }}</td>
           <td>{{ order.currency }}</td>
           <td>{{ order.createdOn | date: 'medium' }}</td>
+          <td class="text-center">
+            <button
+              pButton
+              label="View"
+              icon="pi pi-eye"
+              class="view-btn p-button-rounded"
+              [routerLink]="['/payment-orders', order.reference]"
+              pTooltip="View Details"
+              tooltipPosition="top"
+              appendTo="body"
+            ></button>
+          </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
-        <tr><td colspan="7" class="text-center p-3">No payment orders found.</td></tr>
+        <tr>
+          <td colspan="8" class="text-center p-3">No payment orders found.</td>
+        </tr>
       </ng-template>
     </p-table>
   </p-card>
