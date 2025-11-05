@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { UiState } from '../../core/services/ui-state';
 
 @Component({
   selector: 'app-topbar',
-  imports: [ButtonModule],
+  imports: [RouterLink, ButtonModule],
   templateUrl: './topbar.html',
   styleUrl: './topbar.css',
 })

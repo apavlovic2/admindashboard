@@ -1,0 +1,42 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2a82ff;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  height: 80px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+
+.menu-btn {
+  color: #ffffff;
+  font-size: 1.25rem;
+}
+
+.brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.brand:hover {
+  opacity: 0.85;
+}
+
+.logo {
+  margin-top: 12px;
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+}

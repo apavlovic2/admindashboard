@@ -1,5 +1,14 @@
-<header>
-    <button pButton icon="pi pi-bars" (click)="ui.toggleSidebar()" class="p-button-text"></button>
-    <h2>Admin Dashboard</h2>
-    <p>Welcome, Admin</p>
+<header class="topbar">
+  <button
+    pButton
+    icon="pi pi-bars"
+    (click)="ui.toggleSidebar()"
+    class="menu-btn p-button-text"
+    aria-label="Toggle sidebar"
+  ></button>
+
+  <a routerLink="/" class="brand flex items-center space-x-3">
+    <img src="KupujOnlineLogo.png" alt="Company Logo" class="logo" />
+  </a>
+
 </header>
