@@ -66,6 +66,8 @@ export class PaymentOrderForm implements OnInit {
       amount: [0, [Validators.required, Validators.min(0.01)]],
       currency: ['USD', Validators.required],
       status: ['Created', Validators.required],
+      paidOn: [null],
+      authorizationCode: [''],
       customerMode: ['manual', Validators.required],
       customerSelect: [null],
       customer: this.fb.group({
@@ -108,6 +110,8 @@ export class PaymentOrderForm implements OnInit {
           amount: order.amount,
           currency: order.currency,
           status: order.status,
+          paidOn: order.paidOn ? new Date(order.paidOn) : null,
+          authorizationCode: order.authorizationCode ?? '',
           customer: order.customer,
         });
       });
@@ -189,6 +193,8 @@ export class PaymentOrderForm implements OnInit {
       amount: f['amount'],
       currency: f['currency'],
       status: f['status'],
+      paidOn: f['status'] === 'Successful' ? f['paidOn'] : null,
+      authorizationCode: f['status'] === 'Successful' ? f['authorizationCode'] : null,
       customer:
         this.customerMode() === 'existing' ? f['customerSelect'] : f['customer'],
       createdOn: new Date(),

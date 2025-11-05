@@ -50,6 +50,18 @@
       <p-select formControlName="status" [options]="statuses" placeholder="Select status"></p-select>
     </div>
 
+    @if (form.get('status')?.value === 'Successful') {
+      <div class="field">
+        <label>Paid On</label>
+        <input type="datetime-local" pInputText formControlName="paidOn" />
+      </div>
+
+      <div class="field">
+        <label>Authorization Code</label>
+        <input pInputText formControlName="authorizationCode" placeholder="Enter authorization code" />
+      </div>
+    }
+
     <div class="field">
       <label>Customer *</label>
       <div class="radio-group">
