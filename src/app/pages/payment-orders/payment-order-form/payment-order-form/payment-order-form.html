@@ -1,10 +1,10 @@
 <p-toast></p-toast>
 
-<p-card [header]="editMode ? 'Edit Payment Order' : 'Create Payment Order'">
+<p-card [header]="'Create Payment Order'">
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="payment-order-form">
 
     <div class="field">
-      <label>Reference *</label>
+      <label class="title">Reference *</label>
       <input pInputText formControlName="reference" />
       @if (f['reference'].touched && f['reference'].invalid) {
         <small class="error-message">Reference is required.</small>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="field">
-      <label>Title *</label>
+      <label class="title">Title *</label>
       <input pInputText formControlName="title" />
       @if (f['title'].touched && f['title'].invalid) {
         <small class="error-message">Title is required.</small>
@@ -28,12 +28,12 @@
     </div>
 
     <div class="field">
-      <label>Description</label>
+      <label class="title">Description</label>
       <input pInputText formControlName="description" />
     </div>
 
     <div class="field">
-      <label>Amount *</label>
+      <label class="title">Amount *</label>
       <p-inputNumber formControlName="amount" mode="decimal" [min]="0.01"></p-inputNumber>
       @if (f['amount'].touched && f['amount'].invalid) {
         <small class="error-message">Amount must be greater than 0.</small>
@@ -41,29 +41,29 @@
     </div>
 
     <div class="field">
-      <label>Currency *</label>
+      <label class="title">Currency *</label>
       <input pInputText formControlName="currency" />
     </div>
 
     <div class="field">
-      <label>Status *</label>
+      <label class="title">Status *</label>
       <p-select formControlName="status" [options]="statuses" placeholder="Select status"></p-select>
     </div>
 
     @if (form.get('status')?.value === 'Successful') {
       <div class="field">
-        <label>Paid On</label>
+        <label class="title">Paid On</label>
         <input type="datetime-local" pInputText formControlName="paidOn" />
       </div>
 
       <div class="field">
-        <label>Authorization Code</label>
+        <label class="title">Authorization Code</label>
         <input pInputText formControlName="authorizationCode" placeholder="Enter authorization code" />
       </div>
     }
 
     <div class="field">
-      <label>Customer *</label>
+      <label class="title">Customer *</label>
       <div class="radio-group">
         <p-radioButton name="mode" inputId="manual" value="manual" formControlName="customerMode" />
         <label for="manual">Manual Entry</label>
@@ -74,7 +74,7 @@
 
     @if (customerMode() === 'existing') {
       <div class="field">
-        <label>Select Customer</label>
+        <label class="title">Select Customer</label>
         <p-select
           formControlName="customerSelect"
           [options]="customers()"
@@ -85,14 +85,14 @@
     }
 
     <div formGroupName="customer" class="customer-section">
-      <div class="field"><label>First Name *</label><input pInputText formControlName="firstName" /></div>
-      <div class="field"><label>Last Name *</label><input pInputText formControlName="lastName" /></div>
-      <div class="field"><label>Email *</label><input pInputText formControlName="email" /></div>
-      <div class="field"><label>Phone</label><input pInputText formControlName="phone" /></div>
-      <div class="field"><label>Address</label><input pInputText formControlName="address" /></div>
-      <div class="field"><label>City</label><input pInputText formControlName="city" /></div>
-      <div class="field"><label>Postal Code</label><input pInputText formControlName="postalCode" /></div>
-      <div class="field"><label>Country</label><input pInputText formControlName="country" /></div>
+      <div class="field"><label class="title">First Name *</label><input pInputText formControlName="firstName" /></div>
+      <div class="field"><label class="title">Last Name *</label><input pInputText formControlName="lastName" /></div>
+      <div class="field"><label class="title">Email *</label><input pInputText formControlName="email" /></div>
+      <div class="field"><label class="title">Phone</label><input pInputText formControlName="phone" /></div>
+      <div class="field"><label class="title">Address</label><input pInputText formControlName="address" /></div>
+      <div class="field"><label class="title">City</label><input pInputText formControlName="city" /></div>
+      <div class="field"><label class="title">Postal Code</label><input pInputText formControlName="postalCode" /></div>
+      <div class="field"><label class="title">Country</label><input pInputText formControlName="country" /></div>
     </div>
 
     <div class="button-group">

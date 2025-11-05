@@ -32,7 +32,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PaymentOrderForm implements OnInit {
   form!: FormGroup;
-  editMode = false;
   orderReference!: string;
   duplicateRef = signal(false);
   suggestedRef = signal('');
@@ -57,7 +56,6 @@ export class PaymentOrderForm implements OnInit {
 
   ngOnInit(): void {
     this.orderReference = this.route.snapshot.paramMap.get('id') ?? '';
-    this.editMode = !!this.orderReference;
 
     this.form = this.fb.group({
       reference: ['', Validators.required],
@@ -100,22 +98,6 @@ export class PaymentOrderForm implements OnInit {
       },
       error: (err) => console.error('Failed to load customers', err),
     });
-
-    if (this.editMode) {
-      this.orderService.getPaymentOrder(this.orderReference).subscribe((order) => {
-        this.form.patchValue({
-          reference: order.reference,
-          title: order.title,
-          description: order.description,
-          amount: order.amount,
-          currency: order.currency,
-          status: order.status,
-          paidOn: order.paidOn ? new Date(order.paidOn) : null,
-          authorizationCode: order.authorizationCode ?? '',
-          customer: order.customer,
-        });
-      });
-    } else {
       this.orderService.getPaymentOrders().subscribe((orders) => {
         const refs = orders.map((o) => o.reference);
         const nums = refs
@@ -124,7 +106,6 @@ export class PaymentOrderForm implements OnInit {
         const nextNum = Math.max(...nums, 1000) + 1;
         this.form.patchValue({ reference: `PAY-${nextNum}` });
       });
-    }
 
     this.form.get('reference')?.valueChanges.subscribe((ref) => {
       if (!ref) return;
@@ -186,6 +167,16 @@ export class PaymentOrderForm implements OnInit {
 
     const f = this.form.value;
 
+    let customerData: CustomerData;
+    if (this.customerMode() === 'existing') {
+      customerData = {
+        ...f['customerSelect'],
+        ...f['customer'],
+      };
+    } else {
+      customerData = f['customer'];
+    }
+
     const order: PaymentOrder = {
       reference: f['reference'],
       title: f['title'],
@@ -195,23 +186,16 @@ export class PaymentOrderForm implements OnInit {
       status: f['status'],
       paidOn: f['status'] === 'Successful' ? f['paidOn'] : null,
       authorizationCode: f['status'] === 'Successful' ? f['authorizationCode'] : null,
-      customer:
-        this.customerMode() === 'existing' ? f['customerSelect'] : f['customer'],
+      customer: customerData,
       createdOn: new Date(),
     };
 
-    const request$ = this.editMode
-      ? this.orderService.updatePaymentOrder(this.orderReference, order)
-      : this.orderService.createPaymentOrder(order);
-
-    request$.subscribe({
+    this.orderService.createPaymentOrder(order).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: this.editMode
-            ? 'Payment Order updated successfully'
-            : 'Payment Order created successfully',
+          detail: 'Payment Order created successfully',
         });
         setTimeout(() => this.router.navigate(['/payment-orders']), 1000);
       },
