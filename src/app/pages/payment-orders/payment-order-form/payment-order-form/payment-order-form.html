@@ -1,0 +1,92 @@
+<p-toast></p-toast>
+
+<p-card [header]="editMode ? 'Edit Payment Order' : 'Create Payment Order'">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="payment-order-form">
+
+    <div class="field">
+      <label>Reference *</label>
+      <input pInputText formControlName="reference" />
+      @if (f['reference'].touched && f['reference'].invalid) {
+        <small class="error-message">Reference is required.</small>
+      }
+      @if (duplicateRef()) {
+        <small class="error-message">
+          Reference "{{ f['reference'].value }}" is already used.<br />
+          Would you like to use
+          <a href="#" (click)="useSuggestedRef(); $event.preventDefault()"> {{ suggestedRef() }} </a>
+          instead?
+        </small>
+      }
+    </div>
+
+    <div class="field">
+      <label>Title *</label>
+      <input pInputText formControlName="title" />
+      @if (f['title'].touched && f['title'].invalid) {
+        <small class="error-message">Title is required.</small>
+      }
+    </div>
+
+    <div class="field">
+      <label>Description</label>
+      <input pInputText formControlName="description" />
+    </div>
+
+    <div class="field">
+      <label>Amount *</label>
+      <p-inputNumber formControlName="amount" mode="decimal" [min]="0.01"></p-inputNumber>
+      @if (f['amount'].touched && f['amount'].invalid) {
+        <small class="error-message">Amount must be greater than 0.</small>
+      }
+    </div>
+
+    <div class="field">
+      <label>Currency *</label>
+      <input pInputText formControlName="currency" />
+    </div>
+
+    <div class="field">
+      <label>Status *</label>
+      <p-select formControlName="status" [options]="statuses" placeholder="Select status"></p-select>
+    </div>
+
+    <div class="field">
+      <label>Customer *</label>
+      <div class="radio-group">
+        <p-radioButton name="mode" inputId="manual" value="manual" formControlName="customerMode" />
+        <label for="manual">Manual Entry</label>
+        <p-radioButton name="mode" inputId="existing" value="existing" formControlName="customerMode" />
+        <label for="existing">Use Existing</label>
+      </div>
+    </div>
+
+    @if (customerMode() === 'existing') {
+      <div class="field">
+        <label>Select Customer</label>
+        <p-select
+          formControlName="customerSelect"
+          [options]="customers()"
+          optionLabel="email"
+          placeholder="Choose a customer"
+        ></p-select>
+      </div>
+    }
+
+    <div formGroupName="customer" class="customer-section">
+      <div class="field"><label>First Name *</label><input pInputText formControlName="firstName" /></div>
+      <div class="field"><label>Last Name *</label><input pInputText formControlName="lastName" /></div>
+      <div class="field"><label>Email *</label><input pInputText formControlName="email" /></div>
+      <div class="field"><label>Phone</label><input pInputText formControlName="phone" /></div>
+      <div class="field"><label>Address</label><input pInputText formControlName="address" /></div>
+      <div class="field"><label>City</label><input pInputText formControlName="city" /></div>
+      <div class="field"><label>Postal Code</label><input pInputText formControlName="postalCode" /></div>
+      <div class="field"><label>Country</label><input pInputText formControlName="country" /></div>
+    </div>
+
+    <div class="button-group">
+      <button pButton type="button" label="Cancel" class="p-button-secondary" (click)="onCancel()"></button>
+      <button pButton type="submit" label="Save" [disabled]="form.invalid || duplicateRef()"></button>
+    </div>
+
+  </form>
+</p-card>

@@ -6,53 +6,51 @@
   [showCloseIcon]="true"
   appendTo="body"
   (onHide)="closeSidebar()"
-  [styleClass]="'w-64 md:w-72 bg-white shadow-lg border-r border-gray-200'"
+  styleClass="sidebar-drawer"
 >
-  <div class="flex flex-col h-full">
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-xl font-bold text-gray-800">Admin Dashboard</h1>
+  <div class="sidebar-container">
+    <div class="sidebar-header">
+      <h1 class="sidebar-title">Admin Dashboard</h1>
     </div>
 
-    <nav class="flex-1">
-      <ul class="space-y-3 text-gray-700 font-medium">
+    <nav class="sidebar-nav">
+      <ul>
         <li>
           <a
             routerLink="/"
-            routerLinkActive="text-blue-600 font-semibold"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }"
             (click)="closeSidebar()"
-            class="flex items-center gap-2 hover:text-blue-500 transition-colors"
           >
-            <i class="pi pi-home text-lg"></i>
+            <i class="pi pi-home"></i>
             <span>Home</span>
           </a>
         </li>
         <li>
           <a
             routerLink="/payment-orders"
-            routerLinkActive="text-blue-600 font-semibold"
+            routerLinkActive="active-link"
             (click)="closeSidebar()"
-            class="flex items-center gap-2 hover:text-blue-500 transition-colors"
           >
-            <i class="pi pi-credit-card text-lg"></i>
+            <i class="pi pi-credit-card"></i>
             <span>Payment Orders</span>
           </a>
         </li>
         <li>
           <a
             routerLink="/users"
-            routerLinkActive="text-blue-600 font-semibold"
+            routerLinkActive="active-link"
             (click)="closeSidebar()"
-            class="flex items-center gap-2 hover:text-blue-500 transition-colors"
           >
-            <i class="pi pi-users text-lg"></i>
+            <i class="pi pi-users"></i>
             <span>Users</span>
           </a>
         </li>
       </ul>
     </nav>
 
-    <footer class="mt-auto pt-6 border-t text-sm text-gray-500">
-      <p>© 2025 MyCompany</p>
+    <footer class="sidebar-footer">
+      <p>© 2025 KupujOnline</p>
     </footer>
   </div>
 </p-drawer>

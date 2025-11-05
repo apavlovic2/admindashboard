@@ -47,6 +47,7 @@
 }
 
 .new-order-btn {
+  color: white;
   min-width: 200px;
   height: 2.75rem;
   font-weight: 600;
@@ -97,4 +98,8 @@
 
 .new-order-btn:hover {
   background-color: #4caf50 !important;
+}
+
+.pi-search {
+  padding-right: 10px;
 }

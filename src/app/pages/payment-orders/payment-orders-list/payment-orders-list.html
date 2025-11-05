@@ -6,7 +6,7 @@
           <i class="pi pi-search"></i>
           <input
             pInputText
-            placeholder="Search by Reference, Title or Description"
+            placeholder="Search"
             [ngModel]="searchTerm()"
             (ngModelChange)="searchTerm.set($event); applyFilters()"
           />
@@ -16,7 +16,7 @@
           [ngModel]="selectedStatus()"
           [suggestions]="statuses"
           (completeMethod)="filterStatuses($event)"
-          placeholder="Filter by Status"
+          placeholder="Filter"
           (onSelect)="selectedStatus.set($event.value); applyFilters()"
           (onClear)="selectedStatus.set(null); applyFilters()"
           [forceSelection]="true"
@@ -36,7 +36,6 @@
       </div>
     </div>
 
-    <!-- Table -->
     <p-table
       [value]="filteredOrders()"
       [paginator]="true"

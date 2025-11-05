@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Home } from './pages/home/home'
 import { PaymentOrdersList } from './pages/payment-orders/payment-orders-list/payment-orders-list';
 import { PaymentOrdersDetails } from './pages/payment-orders/payment-orders-details/payment-orders-details';
+import { PaymentOrderForm } from './pages/payment-orders/payment-order-form/payment-order-form/payment-order-form';
 import { UsersList } from './pages/users/users-list/users-list';
 import { UserForm } from './pages/users/user-form/user-form';
 import { Error401 } from './pages/errors/error401/error401';
@@ -14,6 +15,7 @@ export const routes: Routes = [
         path: 'payment-orders',
         children: [
             { path: '', component: PaymentOrdersList, title: 'Payment orders' },
+            { path: 'create', component: PaymentOrderForm, title: 'Create Payment Order' },
             { path: ':id', component: PaymentOrdersDetails, title: 'Payment order details' },
         ],
     },

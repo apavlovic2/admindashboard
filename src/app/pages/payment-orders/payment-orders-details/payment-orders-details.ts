@@ -6,30 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
-
-interface CustomerData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: string;
-  postalCode: string;
-  city: string;
-  country: string;
-}
-
-interface PaymentOrder {
-  reference: string;
-  title: string;
-  description: string;
-  status: 'Created' | 'Successful' | 'Unsuccessful';
-  amount: number;
-  currency: string;
-  customer: CustomerData;
-  createdOn: Date;
-  paidOn?: Date;
-  authorizationCode?: string;
-}
+import { PaymentOrder, PaymentOrderService } from '../../../core/services/payment-order.service';
 
 @Component({
   selector: 'app-payment-orders-details',
@@ -39,45 +16,33 @@ interface PaymentOrder {
 })
 export class PaymentOrdersDetails implements OnInit {
   private route = inject(ActivatedRoute);
+  private orderService = inject(PaymentOrderService);
+
   order = signal<PaymentOrder | null>(null);
+  loading = signal(true);
 
   ngOnInit(): void {
     const ref = this.route.snapshot.paramMap.get('id');
     if (!ref) return;
 
-    // TODO: put real order logic
-    const mockOrder: PaymentOrder = {
-      reference: ref,
-      title: `Mock Order ${ref}`,
-      description: 'Detailed description of the payment order.',
-      status: 'Successful',
-      amount: 250.75,
-      currency: 'USD',
-      customer: {
-        firstName: 'Jane',
-        lastName: 'Doe',
-        email: 'jane.doe@example.com',
-        phone: '+123456789',
-        address: '456 Elm Street',
-        postalCode: '10001',
-        city: 'New York',
-        country: 'USA',
+    this.orderService.getPaymentOrder(ref).subscribe({
+      next: (data) => {
+        this.order.set(data);
+        this.loading.set(false);
       },
-      createdOn: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-      paidOn: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-      authorizationCode: 'AUTH123456',
-    };
-
-    this.order.set(mockOrder);
+      error: () => {
+        console.error('Failed to load payment order.');
+        this.loading.set(false);
+      },
+    });
   }
 
-  getStatusSeverity(status?: string): 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast' | undefined 
-  {
+  getStatusSeverity(status?: string): 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast' | undefined {
     switch (status) {
-      case 'completed': return 'success';
-      case 'pending':   return 'warn';
-      case 'failed':    return 'danger';
-      default:          return 'secondary';
+      case 'Successful': return 'success';
+      case 'Created': return 'info';
+      case 'Unsuccessful': return 'danger';
+      default: return 'secondary';
     }
   }
 }
