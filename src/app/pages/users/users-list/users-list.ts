@@ -46,7 +46,7 @@ export class UsersList implements OnInit {
     });
   }
 
-  deleteUser(id: number): void {
+  deleteUser(id: string): void {
     this.confirmation.confirm({
       message: 'Are you sure you want to delete this user?',
       accept: () => {

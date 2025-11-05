@@ -30,7 +30,7 @@ export class UserForm implements OnInit {
   form!: FormGroup;
   roles = ['Customer', 'Administrator'];
   editMode = false;
-  userId!: number;
+  userId!: string;
   showPassword = signal<boolean>(false);
 
   constructor(
@@ -42,8 +42,9 @@ export class UserForm implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userId = Number(this.route.snapshot.paramMap.get('id'));
-    this.editMode = !!this.userId;
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.editMode = !!idParam;
+    this.userId = idParam ?? '';
 
     this.form = this.fb.group({
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
