@@ -1,49 +1,74 @@
-<p-card header="Users">
-  <div class="flex justify-between mb-3">
-    <h2>Manage Users</h2>
-    <a pButton label="Create User" icon="pi pi-plus" routerLink="/users/create"></a>
+<p-card header="Manage Users">
+  <div class="toolbar">
+    <a
+      pButton
+      label="Create User"
+      icon="pi pi-plus"
+      routerLink="/users/create"
+      class="create-btn"
+    ></a>
   </div>
 
-  <p-table
-    [value]="users()"
-    [paginator]="true"
-    [rows]="10"
-    [loading]="loading()"
-    sortMode="multiple"
-    responsiveLayout="scroll"
-  >
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName" /></th>
-        <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName" /></th>
-        <th pSortableColumn="email">Email <p-sortIcon field="email" /></th>
-        <th>Roles</th>
-        <th pSortableColumn="createdOn">Created On <p-sortIcon field="createdOn" /></th>
-        <th>Actions</th>
-      </tr>
-    </ng-template>
+  <div class="table-container">
+    <p-table
+      [value]="users()"
+      [paginator]="true"
+      [rows]="10"
+      [loading]="loading()"
+      sortMode="multiple"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="firstName">
+            First Name <p-sortIcon field="firstName" />
+          </th>
+          <th pSortableColumn="lastName">
+            Last Name <p-sortIcon field="lastName" />
+          </th>
+          <th pSortableColumn="email">
+            Email <p-sortIcon field="email" />
+          </th>
+          <th>Roles</th>
+          <th pSortableColumn="createdOn">
+            Created On <p-sortIcon field="createdOn" />
+          </th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="body" let-user>
-      <tr>
-        <td>{{ user.firstName }}</td>
-        <td>{{ user.lastName }}</td>
-        <td>{{ user.email }}</td>
-        <td>
-          <p-tag
-            *ngFor="let role of user.roles"
-            [value]="role"
-            [severity]="role === 'Administrator' ? 'danger' : 'info'"
-            class="mr-2"
-          ></p-tag>
-        </td>
-        <td>{{ user.createdOn | date:'medium' }}</td>
-        <td class="actions">
-          <a pButton icon="pi pi-pencil" routerLink="/users/edit/{{ user.id }}" class="mr-2"></a>
-          <button pButton icon="pi pi-trash" severity="danger" (click)="deleteUser(user.id)"></button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <p-tag
+              *ngFor="let role of user.roles"
+              [value]="role"
+              [severity]="role === 'Administrator' ? 'danger' : 'info'"
+              class="role-tag"
+            ></p-tag>
+          </td>
+          <td>{{ user.createdOn | date: 'medium' }}</td>
+          <td class="actions">
+            <a
+              pButton
+              icon="pi pi-pencil"
+              routerLink="/users/edit/{{ user.id }}"
+              class="edit-btn"
+            ></a>
+            <button
+              pButton
+              icon="pi pi-trash"
+              severity="danger"
+              (click)="deleteUser(user.id)"
+              class="delete-btn"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 
   <p-confirmDialog></p-confirmDialog>
 </p-card>

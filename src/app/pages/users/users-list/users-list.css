@@ -1,4 +1,55 @@
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.create-btn {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 500;
+}
+
+.create-btn:hover {
+  background-color: #1e40af !important;
+}
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.p-table {
+  min-width: 800px;
+}
+
+.role-tag {
+  margin-right: 0.25rem;
+}
+
 .actions {
   display: flex;
   gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.edit-btn {
+  background-color: #10b981 !important;
+  border: none !important;
+  color: white !important;
+}
+
+.edit-btn:hover {
+  background-color: #059669 !important;
+}
+
+.delete-btn {
+  background-color: #ef4444 !important;
+  border: none !important;
+  color: white !important;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626 !important;
 }
